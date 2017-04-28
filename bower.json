@@ -1,0 +1,22 @@
+{
+  "name": "sawaiz.github.com",
+  "authors": [
+    "sawaiz <github@sawaizsyed.com>"
+  ],
+  "description": "Personal website, cv, project page",
+  "main": "",
+  "license": "MIT",
+  "homepage": "sawaiz.github.com",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^2.0.0-rc.5",
+    "paper-card": "polymerelements/paper-card#2.0-preview"
+  }
+}

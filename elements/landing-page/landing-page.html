@@ -1,0 +1,79 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+
+<link href="https://fonts.googleapis.com/css?family=Montserrat:100" rel="stylesheet">
+
+<dom-module id="landing-page">
+
+    <template>
+        <style>
+            :host {
+                display: block;
+                background: url(./background.jpg);
+                background-position: center left;
+                background-repeat: no-repeat;
+                background-size: cover;
+                height: 100%;
+            }
+            .overlay {
+                background: linear-gradient(to right, rgba(0,43,54,0.6), rgba(0,43,54,1));
+                height: 100%;
+            }
+            .cards {
+                font-family: 'Montserrat';
+                font-weight: 100;
+                display: float;
+                position: absolute;
+                width: 20vw;
+                height: 12vh;
+                right: 5vw;
+                bottom: 20vh;
+            }
+            paper-card {
+                height: 100%;
+                width: 100%;
+            }
+            p {
+                font-family: 'Montserrat';
+                font-weight: 100;
+                font-size: 8vw;
+                color: #839496;
+                position: absolute;
+                right: 5vw;
+                bottom: 5vh;
+                margin: 0;
+            }
+        </style>
+        <div class="overlay"></div>
+        <!--<div class="cards">
+            <paper-card heading="Card title" image="" elevation="1" animated-shadow="false">
+              <div class="card-content"></div>
+              <div class="card-actions">
+
+              </div>
+            </paper-card>
+            
+        </div>-->
+        <p>{{name}}</p>
+        </div>
+    </template>
+
+    <script>
+        class LandingPage extends Polymer.Element {
+            static get is() { return "landing-page"; }
+
+            // configure the owner property
+            static get properties() {
+                return {
+                    name: {
+                        type: String,
+                        value: 'Daniel'
+                    }
+                };
+            }
+
+        }
+        customElements.define(LandingPage.is, LandingPage);
+    </script>
+
+</dom-module>
