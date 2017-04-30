@@ -17,23 +17,87 @@
     <meta name="theme-color" content="#6b9272">
     <meta name="msapplication-TileColor" content="#6b9272">
     <!-- Import polyfill -->
-    <script src="./bower_components/webcomponentsjs/webcomponents-lite.js"></script>
-    <!--Import Polymer-->
-    <link rel="import" href="/bower_components/polymer/polymer.html">
-    <!-- Import custom element -->
-    <link rel="import" href="elements/landing-page/landing-page.html">
+    <script src="./bower_components/webcomponentsjs/webcomponents-lite.js" async></script>
+    <!-- Import custom elements -->
+    <link rel="import" href="./elements/side-cards/side-cards.html">
+    <link rel="import" href="./elements/interactive-terminal/interactive-terminal.html">
+    <!--Import Font-->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:100" rel="stylesheet" async>
+    <link href="https://fonts.googleapis.com/css?family=Anonymous+Pro" rel="stylesheet">
 
     <style>
         body {
+            margin:0;
+        }
+        section.landing {
+            display: block;
+            background: url(./background.jpg);
+            background-position: center left;
+            background-repeat: no-repeat;
+            background-size: cover;
             margin: 0;
             height: 100vh;
         }
+        
+        p.name {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 100;
+            font-size: 8em;
+            color: #839496;
+            position: absolute;
+            right: 5vw;
+            bottom: 5vh;
+            margin: 0;
+        }
+        
+        .overlay {
+            background: linear-gradient(to right, rgba(0, 43, 54, 0.6), rgba(0, 43, 54, 1));
+            height: 100%;
+        }
+
+        side-cards {
+            height: 100%;
+            width: 100%;
+        }
+
+        #shell-panel {
+            /*display: block;*/
+            height: auto;
+            width: 100%;
+            color: rgb(238, 232, 213);
+            /*position: absolute;*/
+            bottom: 0;
+            margin: 0;
+            z-index: 10;
+            font-family: 'Anonymous Pro', monospace;
+            font-size: 5vh;
+            overflow: hidden;
+        }
+
+        #shell-view {
+            position: absolute;
+            bottom: 0;
+        }
+
     </style>
 
 </head>
 
 <body>
-    <landing-page name="Sawaiz Syed"></landing-page>
+    <section class="landing">
+        <div class="overlay"></div>
+        <!--<div id="shell-panel">
+            <div id="shell-view"></div>
+            <interactive-terminal typed="false"></interactive-terminal>        
+        </div>-->
+        <div>
+            <side-cards resume="./resume"></side-cards>
+            <p class="name">Sawaiz Syed</p>
+        </div>
+    </section>
+    <section>
+        <!--Lorem Ipsum-->
+    </section>
 </body>
 
 </html>
