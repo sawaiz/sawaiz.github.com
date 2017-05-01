@@ -19,16 +19,18 @@
     <!-- Import polyfill -->
     <script src="./bower_components/webcomponentsjs/webcomponents-lite.js" async></script>
     <!-- Import custom elements -->
-    <link rel="import" href="./elements/side-cards/side-cards.html">
-    <link rel="import" href="./elements/interactive-terminal/interactive-terminal.html">
+    <link rel="import" href="./elements/quick-look/quick-look.html" async>
     <!--Import Font-->
     <link href="https://fonts.googleapis.com/css?family=Montserrat:100" rel="stylesheet" async>
-    <link href="https://fonts.googleapis.com/css?family=Anonymous+Pro" rel="stylesheet">
 
     <style>
         body {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 100;
+            color: #839496;            
             margin:0;
         }
+
         section.landing {
             display: block;
             background: url(./background.jpg);
@@ -37,46 +39,30 @@
             background-size: cover;
             margin: 0;
             height: 100vh;
+            z-index: 0;
         }
-        
-        p.name {
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 100;
-            font-size: 8em;
-            color: #839496;
-            position: absolute;
-            right: 5vw;
-            bottom: 5vh;
-            margin: 0;
-        }
-        
+
         .overlay {
             background: linear-gradient(to right, rgba(0, 43, 54, 0.6), rgba(0, 43, 54, 1));
             height: 100%;
+            z-index: 1;
         }
 
-        side-cards {
-            height: 100%;
-            width: 100%;
-        }
-
-        #shell-panel {
-            /*display: block;*/
-            height: auto;
-            width: 100%;
-            color: rgb(238, 232, 213);
-            /*position: absolute;*/
-            bottom: 0;
-            margin: 0;
-            z-index: 10;
-            font-family: 'Anonymous Pro', monospace;
-            font-size: 5vh;
-            overflow: hidden;
-        }
-
-        #shell-view {
+        div.right-side{
+            display: flex;                  
+            flex-direction: column;   
             position: absolute;
-            bottom: 0;
+            z-index: 2;
+            bottom: 2vh;
+            right: 2vw;
+            margin: 0;
+        }
+        
+        p {
+            display: block;
+            text-align: right;
+            margin: 0;
+            font-size: 10vw;   
         }
 
     </style>
@@ -86,17 +72,13 @@
 <body>
     <section class="landing">
         <div class="overlay"></div>
-        <!--<div id="shell-panel">
-            <div id="shell-view"></div>
-            <interactive-terminal typed="false"></interactive-terminal>        
-        </div>-->
-        <div>
-            <side-cards resume="./resume"></side-cards>
-            <p class="name">Sawaiz Syed</p>
+        <div class="right-side">
+            <quick-look directory="quickLook"></quick-look>
+            <p>Sawaiz Syed</p>
         </div>
     </section>
-    <section>
-        <!--Lorem Ipsum-->
+    <section id="experience">
+        <experience-info></experience-info>
     </section>
 </body>
 

@@ -1,0 +1,22 @@
+[
+    {
+        "title": "About",
+        "route": "about",
+        "markdown": "about.md"
+    },
+        {
+        "title": "Hardware",
+        "route": "hardware",
+        "markdown": "hardware.md"
+    },
+        {
+        "title": "Software",
+        "route": "software",
+        "markdown": "software.md"
+    },
+        {
+        "title": "Art",
+        "route": "art",
+        "markdown": "art.md"
+    }
+]
