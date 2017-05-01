@@ -1,3 +1,5 @@
 # Art
 ---
-Such has been the patient sufferance of these Colonies; and such is now the necessity which constrains them to alter their former Systems of Government. The history of the present King of Great Britain is a history of repeated injuries and usurpations, all having in direct object the establishment of an absolute Tyranny over these States. To prove this, let Facts be submitted to a candid world.
+Arts is the broad catch-all I'm using for photography, graphic design, renderings, sculpture, calligraphy, architecture, basically anything that puts form over function.
+
+<img src="./quickLook/20160417-DSC_0047.jpg" alt="Windfarm at sunset" style="width:100%;"></img>
