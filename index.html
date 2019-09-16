@@ -30,7 +30,7 @@
             color: #839496;
             margin: 0;
         }
-        
+
         section.landing {
             display: block;
             background: url('data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/4QBGRXhpZgAATU0AKgAAAAgABAESAAMAAAABAAEAAFEQAAEAAAABAQAAAFERAAQAAAABAAAAAFESAAQAAAABAAAAAAAAAAD/2wBDAAIBAQIBAQICAgICAgICAwUDAwMDAwYEBAMFBwYHBwcGBwcICQsJCAgKCAcHCg0KCgsMDAwMBwkODw0MDgsMDAz/2wBDAQICAgMDAwYDAwYMCAcIDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAz/wAARCAAFAAgDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD470b4oSR/Ayx1qS0Wa6uLEuxeZjmSSa7LMT3yXzt6cDGMDBRRWsacZ1Kjl39Oi7GWKqSpwpqL6fqz/9k=');
@@ -40,7 +40,7 @@
             height: 100vh;
             transition: background 400ms ease-out;
         }
-        
+
         section.landing.loaded {
             background: url("./background.jpg");
             background-position: center left;
@@ -48,13 +48,13 @@
             background-size: cover;
             transition: background 400ms ease-in;
         }
-        
+
         .overlay {
             background: linear-gradient(to right, rgba(0, 43, 54, 0.6), rgba(0, 43, 54, 1));
             height: 100%;
             z-index: 1;
         }
-        
+
         div.right-side {
             display: flex;
             flex-direction: column;
@@ -64,14 +64,14 @@
             right: 2vw;
             margin: 0;
         }
-        
+
         p {
             display: block;
             text-align: right;
             margin: 0;
             font-size: 10vw;
         }
-        
+
         nav {
             display: flex;
             flex-direction: row;
@@ -82,7 +82,7 @@
             margin: 0;
             padding: 0;
         }
-        
+
         nav a {
             display: block;
             flex: 1 0 auto;
@@ -98,19 +98,20 @@
             margin: 0 0.4vw;
             transition: 1s;
         }
-        
+
         nav a:hover {
             background-color: #839496;
             color: rgba(0, 43, 54, 1);
             transition: 1s;
         }
+
         /* Terminal */
-        
+
         .term {
             font-family: 'IBM Plex Mono', monospace;
             font-size: 3vw;
         }
-        
+
         #termDiv {
             top: -78vw;
             position: absolute;
@@ -127,7 +128,8 @@
         <div class="right-side">
             <div id="termDiv"></div>
             <nav>
-                <a id="reccomendationIndex" on-mouseover="show" on-mouseleave="hide" href="http://www.sawaiz.com">Reccomendation Index</a>
+                <a id="recommendationIndex" on-mouseover="show" on-mouseleave="hide"
+                    href="http://www.sawaiz.com">Reccomendation Index</a>
                 <a id="github" href="http://www.github.com/sawaiz">Github</a>
                 <a id="cv" href="https://github.com/Sawaiz/curriculumVitae/raw/master/cv.pdf">CV</a>
                 <a id="contact" href="mailto:webmaster@sawaizsyed.com">Contact</a>
@@ -137,12 +139,63 @@
 </body>
 
 <script>
-    window.onload = function() {
+    window.onload = function () {
         var background = new Image();
         background.src = "./background.jpg";
-        background.onload = function() {
+        background.onload = function () {
             document.getElementsByClassName("landing")[0].classList.add('loaded');
         }
+
+        var fs = {
+            "files": {
+                "type": "directory",
+                "permissions": "rwxr--r--",
+                "contents": {
+                    "system": {
+                        "type": "directory",
+                        "permissions": "rwxr--r--",
+                        "contents": {
+                            "items": {
+                                "type": "directory",
+                                "permissions": "rwxr--r--",
+                                "contents": {
+                                    "list": {
+                                        "type": "directory",
+                                        "permissions": "rwxr--r--",
+                                        "contents": {
+
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "links": {
+                "type": "directory",
+                "permissions": "rwxr--r--",
+                "contents": {
+                    "recommendationIndex": {
+                        "type": "link",
+                        "permissions": "rwxr--r--"
+                    },
+                    "github": {
+                        "type": "link",
+                        "permissions": "rwxr--r--"
+                    },
+                    "cv": {
+                        "type": "link",
+                        "permissions": "rwxr--r--"
+                    },
+                    "contact": {
+                        "type": "link",
+                        "permissions": "rwxr--r--"
+                    }
+                }
+            }
+        };
+        var pwd = "/";
 
         var term = new Terminal({
             x: 0,
@@ -152,9 +205,9 @@
             cols: 32,
             rows: 20,
             rowHeight: 50,
-            blinkDelay: 200,
+            blinkDelay: 500,
             crsrBlinkMode: true,
-            crsrBlockMode: true,
+            crsrBlockMode: false,
             initHandler: termInitHandler,
             handler: termHandler,
             // exitHandler: termExitHandler
@@ -183,16 +236,17 @@
             this.globals.setColor("D", "#268bd2");
             this.globals.setColor("E", "#2aa198");
             this.globals.setColor("F", "#859900");
-            for (var i = 0; i < 24; i++) {
+            for (var i = 0; i < 20; i++) {
                 this.newLine();
             }
             this.prompt();
+            this.cursorOn();
         }
 
         function termHandler() {
             this.newLine();
             parser.parseLine(this);
-            if (this.lineBuffer == "") {
+            if (this.lineBuffer.trim() == "") {
                 // Do nothing
             } else if (this.argv[0] == "cls" || this.argv[0] == "clear") {
                 for (var i = 0; i < 24; i++) {
@@ -211,6 +265,52 @@
                         this.write("%cAError " + this.argv[1] + " not found");
                     }
                 }
+            } else if (this.argv[0] == "pwd") {
+                if (this.argv.length > 1) {
+                    this.write(this.argv[0] + ": %cAtoo many arguments %n");
+                } else {
+                    this.write(pwd);
+                }
+            } else if (this.argv[0] == "ls") {
+                if (this.argv.length > 2) {
+                    this.write(this.argv[0] + ": %cAtoo many arguments %n");
+                } else {
+                    // Navigate and make clone of fs
+                    var navigate = pwd.split("/");
+                    // If giving a argument, use that
+                    if (this.argv.length == 2) {
+                        // Check to see if its a reletive path or abs
+                        navigate = this.argv[1].split("/");
+                        if(navigate.length == 1){
+                            navigate = (pwd+this.argv[1]).split("/");
+                        }
+                    }
+                    navigate.shift();
+                    var fsNavigate = Object.assign({}, fs);
+                    this.write("drwxr--r-- %cD.%n");
+                    if (navigate[0] != "") {
+                        this.write("drwxr--r-- %cD..%n");
+                        // Navigate down directory tree
+                        for (element in navigate) {
+                            fsNavigate = fsNavigate[navigate[element]].contents;
+                        }
+                    }
+                    for (element in Object.keys(fsNavigate)) {
+                        var listString = ""
+                        if (fsNavigate[Object.keys(fsNavigate)[element]].type == "directory") {
+                            listString += "d"
+                            listString += fsNavigate[Object.keys(fsNavigate)[element]].permissions;
+                            listString += "%cD ";
+                        } else if (fsNavigate[Object.keys(fsNavigate)[element]].type == "link") {
+                            listString += "-"
+                            listString += fsNavigate[Object.keys(fsNavigate)[element]].permissions;
+                            listString += "%cE ";
+                        }
+                        listString += Object.keys(fsNavigate)[element] + "%n";
+                        this.write(listString);
+                    }
+
+                }
             } else if (this.argv[0] == "cat") {
                 this.write("%cA!%c0 Not yet Implemented");
             } else if (this.argv[0] == "help") {
@@ -219,6 +319,9 @@
                 this.write("  %cEclear       %c3-%c0 Clears screen%n");
                 this.write("  %cEcls         %c3-%c0 cls%c8->%c0clear%n");
                 this.write("%cA! %cEcat  %cD<file> %c3-%c0 Print out file%n");
+                this.write("%cA! %cEls          %c3-%c0 ls%c8->%c0ls .%n");
+                this.write("%cA! %cEls   %cD<dir>  %c3-%c0 List files%n");
+                this.write("  %cEpwd         %c3-%c0 current dir%n");
                 this.write("  %cEhref %cD<link> %c3-%c0 Follow link%n");
             } else {
                 this.write("command not found: " + this.argv[0]);
