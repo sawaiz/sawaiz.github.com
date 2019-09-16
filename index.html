@@ -16,12 +16,12 @@
     <meta name="application-name" content="Sawaiz">
     <meta name="theme-color" content="#6b9272">
     <meta name="msapplication-TileColor" content="#6b9272">
-    <!-- Import polyfill -->
-    <script src="./bower_components/webcomponentsjs/webcomponents-lite.js" async></script>
-    <!-- Import custom elements -->
-    <link rel="import" href="./elements/quick-look/quick-look.html" async>
     <!--Import Font-->
     <link href="https://fonts.googleapis.com/css?family=Montserrat:100" rel="stylesheet" async>
+    <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono&display=swap" rel="stylesheet">
+    <!-- Import terminal -->
+    <script src="termlib/termlib_min.js"></script>
+    <script src="termlib/termlib_parser_min.js"></script>
 
     <style>
         body {
@@ -71,6 +71,52 @@
             margin: 0;
             font-size: 10vw;
         }
+        
+        nav {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            width: 100%;
+            font-weight: 100;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        
+        nav a {
+            display: block;
+            flex: 1 0 auto;
+            float: left;
+            text-align: center;
+            font-size: 2vw;
+            text-decoration: none;
+            color: #839496;
+            border-color: #839496;
+            border-width: 0.1vw;
+            border-style: solid;
+            padding: 0.4vw 0;
+            margin: 0 0.4vw;
+            transition: 1s;
+        }
+        
+        nav a:hover {
+            background-color: #839496;
+            color: rgba(0, 43, 54, 1);
+            transition: 1s;
+        }
+        /* Terminal */
+        
+        .term {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 3vw;
+        }
+        
+        #termDiv {
+            top: -78vw;
+            position: absolute;
+            visibility: hidden;
+            z-index: 1;
+        }
     </style>
 
 </head>
@@ -79,24 +125,107 @@
     <section class="landing">
         <div class="overlay"></div>
         <div class="right-side">
-            <quick-look directory="quickLook"></quick-look>
+            <div id="termDiv"></div>
+            <nav>
+                <a id="reccomendationIndex" on-mouseover="show" on-mouseleave="hide" href="http://www.sawaiz.com">Reccomendation Index</a>
+                <a id="github" href="http://www.github.com/sawaiz">Github</a>
+                <a id="cv" href="https://github.com/Sawaiz/curriculumVitae/raw/master/cv.pdf">CV</a>
+                <a id="contact" href="mailto:webmaster@sawaizsyed.com">Contact</a>
+            </nav>
             <p>Sawaiz Syed</p>
         </div>
-    </section>
-    <section id="experience">
-        <experience-info></experience-info>
-    </section>
 </body>
 
 <script>
-    window.onload = function () {
+    window.onload = function() {
         var background = new Image();
         background.src = "./background.jpg";
-        background.onload = function () {
+        background.onload = function() {
             document.getElementsByClassName("landing")[0].classList.add('loaded');
         }
-    }
 
+        var term = new Terminal({
+            x: 0,
+            y: 0,
+            termDiv: "termDiv",
+            bgColor: "transparent",
+            cols: 32,
+            rows: 20,
+            rowHeight: 50,
+            blinkDelay: 200,
+            crsrBlinkMode: true,
+            crsrBlockMode: true,
+            initHandler: termInitHandler,
+            handler: termHandler,
+            // exitHandler: termExitHandler
+        });
+        var parser = new Parser();
+        term.open();
+
+        function termInitHandler() {
+            // Remove the default backgournd.
+            document.getElementById("termDiv").firstChild.firstChild.firstChild.firstChild.removeAttribute("style");
+            document.getElementById("termDiv").style.top = null;
+            // Change colors to solaried dark
+            this.globals.setColor("0", "#002b36");
+            this.globals.setColor("1", "#073642");
+            this.globals.setColor("2", "#586e75");
+            this.globals.setColor("3", "#657b83");
+            this.globals.setColor("4", "#839496");
+            this.globals.setColor("5", "#93a1a1");
+            this.globals.setColor("6", "#eee8d5");
+            this.globals.setColor("7", "#fdf6e3");
+            this.globals.setColor("8", "#b58900");
+            this.globals.setColor("9", "#cb4b16");
+            this.globals.setColor("A", "#dc322f");
+            this.globals.setColor("B", "#d33682");
+            this.globals.setColor("C", "#6c71c4");
+            this.globals.setColor("D", "#268bd2");
+            this.globals.setColor("E", "#2aa198");
+            this.globals.setColor("F", "#859900");
+            for (var i = 0; i < 24; i++) {
+                this.newLine();
+            }
+            this.prompt();
+        }
+
+        function termHandler() {
+            this.newLine();
+            parser.parseLine(this);
+            if (this.lineBuffer == "") {
+                // Do nothing
+            } else if (this.argv[0] == "cls" || this.argv[0] == "clear") {
+                for (var i = 0; i < 24; i++) {
+                    this.newLine();
+                }
+            } else if (this.argv[0] == "href") {
+                if (this.argv.length > 2) {
+                    this.write(this.argv[0] + ": %cAtoo many arguments %n");
+                } else if (this.argv.length == 1) {
+                    this.write(this.argv[0] + ": %cAtoo few arguments %n");
+                } else {
+                    if (document.getElementById(this.argv[1])) {
+                        document.getElementById(this.argv[1]).click();
+                        this.write("Following link to " + this.argv[1] + ".");
+                    } else {
+                        this.write("%cA Error " + this.argv[1] + " not found");
+                    }
+                }
+            } else if (this.argv[0] == "cat") {
+                this.write("%cA!%c0 Not yet Implemented");
+            } else if (this.argv[0] == "help") {
+                // Print help
+                this.write("Valid commands:%n");
+                this.write("  %cEclear       %c3-%c0 Clears screen%n");
+                this.write("  %cEcls         %c3-%c0 cls%c8->%c0clear%n");
+                this.write("%cA! %cEcat  %cD<file> %c3-%c0 Print out file%n");
+                this.write("  %cEhref %cD<link> %c3-%c0 Follow link%n");
+            } else {
+                this.write("command not found: " + this.argv[0]);
+            }
+            this.prompt();
+        }
+    }
 </script>
 
 </html>
