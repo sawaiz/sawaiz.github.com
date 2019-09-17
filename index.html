@@ -193,9 +193,118 @@
                         "permissions": "rwxr--r--"
                     }
                 }
+            },
+            init: function () {
+                addParents(this);
+                // Local and parent at root
+                this["."] = {
+                    "contents": this,
+                    "type": "directory",
+                    "permissions": "rwxr--r--"
+                };
+                this[".."] = {
+                    "contents": this,
+                    "type": "directory",
+                    "permissions": "rwxr--r--"
+                };
+                // Recurse though rest to add local and parent dir
+                function addParents(root) {
+                    for (var file in root) {
+                        if (root[file].contents !== undefined) {
+                            addParents(root[file].contents);
+                        }
+                        if (root[file].type == "directory") {
+                            root[file].contents["."] = {
+                                "contents": root[file].contents,
+                                "type": "directory",
+                                "permissions": "rwxr--r--"
+                            };
+                            root[file].contents[".."] = {
+                                "contents": root,
+                                "type": "directory",
+                                "permissions": "rwxr--r--"
+                            };
+                        }
+
+                    }
+                }
+                delete this.init;
+                return this;
             }
-        };
+        }.init();
+        // Reorder it alphabetically, recurseivly, to a limited depth..
+        function reorder(root, depth) {
+            if (depth > 0) {
+                const ordered = {};
+                Object.keys(root).sort().forEach(function (key) {
+                    ordered[key] = root[key];
+                    if (ordered[key].contents) {
+                        var check = reorder(ordered[key].contents, depth - 1);
+                        if (check) {
+                            ordered[key].contents = check;
+                        }
+                    }
+                });
+                return ordered;
+            }
+
+        }
+        fs = reorder(fs, 10);
         var pwd = "/";
+
+        function convertPath(path) {
+            // Build both into full paths
+            if (path.charAt(0) != "/") {
+                if (pwd == "/") {
+                    path = "/" + path;
+                } else {
+                    path = pwd + "/" + path;
+                }
+            }
+            path = path.split("/");
+            path.shift();
+            if (path[path.length - 1] == "") {
+                path.pop();
+            }
+            var absolutePath = [];
+            // Navigate down path
+            var fsNavigate = Object.assign({}, fs);
+            try {
+                for (element in path) {
+                    if (path[element] == ".") {
+                        // Do nothing, staying in current dir
+                    } else if (path[element] == "..") {
+                        absolutePath.pop();
+                    } else {
+                        absolutePath.push(path[element]);
+                    }
+                    fsNavigate = fsNavigate[path[element]].contents;
+                }
+            } catch (error) {
+                // Null if path is invalid
+                absolutePath = null;
+            }
+            if (absolutePath) {
+                absolutePath = "/" + absolutePath.join("/");
+            }
+            return absolutePath;
+        }
+
+        function navigate(absPath) {
+            if (absPath == null) {
+                return null;
+            } else {
+                absPath = absPath.split("/");
+                absPath.shift();
+                var fsNavigate = Object.assign({}, fs);
+                if (absPath[0] != "") {
+                    for (element in absPath) {
+                        fsNavigate = fsNavigate[absPath[element]].contents;
+                    }
+                }
+                return fsNavigate;
+            }
+        }
 
         var term = new Terminal({
             x: 0,
@@ -254,9 +363,9 @@
                 }
             } else if (this.argv[0] == "href") {
                 if (this.argv.length > 2) {
-                    this.write(this.argv[0] + ": %cAtoo many arguments %n");
+                    this.write("%cA" + this.argv[0] + ": %c0too many arguments %n");
                 } else if (this.argv.length == 1) {
-                    this.write(this.argv[0] + ": %cAtoo few arguments %n");
+                    this.write("%cA" + this.argv[0] + ": %c0too few arguments %n");
                 } else {
                     if (document.getElementById(this.argv[1])) {
                         document.getElementById(this.argv[1]).click();
@@ -267,60 +376,62 @@
                 }
             } else if (this.argv[0] == "pwd") {
                 if (this.argv.length > 1) {
-                    this.write(this.argv[0] + ": %cAtoo many arguments %n");
+                    this.write("%cA" + this.argv[0] + ": %c0too many arguments %n");
                 } else {
                     this.write(pwd);
                 }
             } else if (this.argv[0] == "ls") {
                 if (this.argv.length > 2) {
-                    this.write(this.argv[0] + ": %cAtoo many arguments %n");
+                    this.write("%cA" + this.argv[0] + ": %c0too many arguments %n");
                 } else {
-                    // Navigate and make clone of fs
-                    var navigate = pwd.split("/");
-                    // If giving a argument, use that
-                    if (this.argv.length == 2) {
-                        // Check to see if its a reletive path or abs
-                        navigate = this.argv[1].split("/");
-                        if(navigate.length == 1){
-                            navigate = (pwd+this.argv[1]).split("/");
-                        }
+                    if (this.argv.length == 1) {
+                        this.argv.push(".");
                     }
-                    navigate.shift();
-                    var fsNavigate = Object.assign({}, fs);
-                    this.write("drwxr--r-- %cD.%n");
-                    if (navigate[0] != "") {
-                        this.write("drwxr--r-- %cD..%n");
-                        // Navigate down directory tree
-                        for (element in navigate) {
-                            fsNavigate = fsNavigate[navigate[element]].contents;
-                        }
-                    }
-                    for (element in Object.keys(fsNavigate)) {
-                        var listString = ""
-                        if (fsNavigate[Object.keys(fsNavigate)[element]].type == "directory") {
-                            listString += "d"
-                            listString += fsNavigate[Object.keys(fsNavigate)[element]].permissions;
-                            listString += "%cD ";
-                        } else if (fsNavigate[Object.keys(fsNavigate)[element]].type == "link") {
-                            listString += "-"
-                            listString += fsNavigate[Object.keys(fsNavigate)[element]].permissions;
-                            listString += "%cE ";
-                        }
-                        listString += Object.keys(fsNavigate)[element] + "%n";
-                        this.write(listString);
-                    }
+                    var path = convertPath(this.argv[1]);
+                    if (path != null) {
+                        fsNavigate = navigate(path);
 
+                        for (element in Object.keys(fsNavigate)) {
+                            var listString = ""
+                            if (fsNavigate[Object.keys(fsNavigate)[element]].type == "directory") {
+                                listString += "d"
+                                listString += fsNavigate[Object.keys(fsNavigate)[element]].permissions;
+                                listString += "%cD ";
+                            } else if (fsNavigate[Object.keys(fsNavigate)[element]].type == "link") {
+                                listString += "-"
+                                listString += fsNavigate[Object.keys(fsNavigate)[element]].permissions;
+                                listString += "%cE ";
+                            }
+                            listString += Object.keys(fsNavigate)[element] + "%n";
+                            this.write(listString);
+                        }
+                    } else {
+                        this.write("%cA" + this.argv[0] + "%c0: cannot access " + this.argv[1] + ": No such file or directory%n");
+                    }
                 }
             } else if (this.argv[0] == "cat") {
-                this.write("%cA!%c0 Not yet Implemented");
+                this.write("%cA" + this.agv[0]+ "%c0 Not yet Implemented");
+            } else if (this.argv[0] == "cd") {
+                if (this.argv.length > 2) {
+                    this.write("%cA" + this.argv[0] + "%c0: too many arguments %n");
+                } else {
+                    if (this.argv.length == 1) {
+                        this.argv.push("/");
+                    }
+                if (convertPath(this.argv[1]) != null) {
+                    pwd = convertPath(this.argv[1]);
+                } else {
+                    this.write("%cA" + this.argv[0] + "%c0: cannot access " + this.argv[1] + ": No such file or directory%n");
+                }
+                }
             } else if (this.argv[0] == "help") {
                 // Print help
                 this.write("Valid commands:%n");
                 this.write("  %cEclear       %c3-%c0 Clears screen%n");
                 this.write("  %cEcls         %c3-%c0 cls%c8->%c0clear%n");
                 this.write("%cA! %cEcat  %cD<file> %c3-%c0 Print out file%n");
-                this.write("%cA! %cEls          %c3-%c0 ls%c8->%c0ls .%n");
-                this.write("%cA! %cEls   %cD<dir>  %c3-%c0 List files%n");
+                this.write("  %cEls          %c3-%c0 ls%c8->%c0ls .%n");
+                this.write("  %cEls   %cD<dir>  %c3-%c0 List files%n");
                 this.write("  %cEpwd         %c3-%c0 current dir%n");
                 this.write("  %cEhref %cD<link> %c3-%c0 Follow link%n");
             } else {
