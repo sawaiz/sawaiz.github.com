@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title>Larkspur</title>
+		<meta name="viewport" content="initial-scale=1.0" />
+		<script src="./three.min.js"></script>
+        <script src="./photo-sphere-viewer.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="./style.css">
+        <link href="https://fonts.googleapis.com/css?family=Exo&display=swap" rel="stylesheet">
+	</head>
+
+	<body>
+        <h1>LARKSPUR</h1>
+
+        <p>A 60 square meter two room apartment in Berlin located on the border betwen Schöneberg and Wilmersdorf. It has a custom fitted, custom designed kitchen, spacious bedroom, and is fully furnished.</p>
+
+        <a href="./full/teaTable.jpg"> <img src="./teaTable.jpg"></a>        
+        
+        <h2>Overview</h2>
+        <ul>
+            <li>60m^2 with 3m ceilings</li>
+            <li>2nd floor out of building with 6 floors</li>
+            <li>Building from 1905, renovated 2017 prior to move in</li>
+            <li>Custom fitted kitchen</li>
+            <li>Volkspark 5m walk away</li>
+            <li>Very quiet neighborhood</li>
+        </ul>
+
+        <h2>Transportation</h2>
+        <a href="https://goo.gl/maps/CKCQiLEXkFpJbx9bA"><img src="./bvgMap.png"></a>
+        <ul>
+            <li>3 min walk to Berliner Straße station (U7 and U9)</li>
+            <li>2 min walk to M104 bus line</li>
+            <li>Courtyard bike storage</li>
+            <li>Street parking generaly availible</li>
+        </ul>
+
+        <h2>Amenities</h2>
+        <ul>
+            <li>Natural gas hookup</li>
+            <li>Hot water radiators</li>
+            <li>Large windows</li>
+            <li>Vodafone 100mbps internet (400mbps availible)</li>
+            <li>Google home and Philips hue intergration</li>
+            <li>All incancdecent Bulbs replaced with LEDs</li>
+        </ul>
+
+        <h2>Shopping</h2>
+        <ul>
+            <li>6m - EDEKA </li>
+            <li>5m - Bio Company</li>
+            <li>4m - Eurogida</li>
+        </ul>
+
+        <h2>Floorplan</h2>
+
+        <h3>Entryway</h3>
+
+        <h3>Bedroom</h3>
+            <div id="bedroomEmpty" class="panorama"></div>
+            <p>Photosphere of empty bedroom</p>
+
+        <h3>Bathroom</h3>
+        <h3>Living, Dining, Kitchen</h3>
+            <div id="livingEmpty" class="panorama"></div>
+            <p>Photosphere of empty second room</p>
+
+        <h2>Walkthroughs</h2>
+
+        <video width="100%" height="100%" controls>
+            <source src="./video/walkthrough.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <p>Video walkthrough of empty apartment</p>
+
+        <video width="100%" height="100%" controls>
+            <source src="./video/walkthrough2.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <p>Alternetive view walkthrough of empty apartment</p>
+
+        <h2>Furnishings</h2>
+        <p>Most of the furniture is from IKEA and with preference to the Malm line. The bedroom is is themed dark with black or black brown furniture, and black and white film prints on the walls. The living room is given more color with full color photographs and a dark green sofa while the kitchen and dining area is kept iwth a rustic feel with unfinished wood, open shelving, and a abundance of texitles and glass.</p>
+        <h3>Kitchen, Dining, Pantry</h3>
+        <a href="./full/kitchenFinsihed.jpg"> <img src="./kitchenFinsihed.jpg"></a>        
+        <ul>
+            <li>Villeroy & Boch Porcelain Sink</li>
+            <li>Miele washer with condenser dryer</li>
+            <li>Seimens 5KW gas wok burner domino hob</li>
+            <li>Liebherr Refrigerator</li>
+            <li>Custom modular open source framing system (<a href="https://github.com/sawaiz/larkspurKitchen">CAD</a>)</li>
+        </ul>
+        <h3>Bedroom</h3>
+        <a href="./full/bedView.jpeg"> <img src="./bedView.jpeg"></a>        
+        <ul>
+            <li> <a href="https://www.ikea.com/gb/en/p/brimnes-wardrobe-with-2-doors-white-40400478/">2 Brimnes Wardrobes</a> </li>
+            <li><a href="https://www.ikea.com/gb/en/p/malm-chest-of-3-drawers-black-brown-20403557/">2 Three drawer Malm Dressers with glass top</a></li>
+            <li><a href="https://www.ikea.com/gb/en/p/malm-bed-frame-high-w-4-storage-boxes-black-brown-black-brown-luroey-s59002441/">Malm high bed 160cmx200cm with four under bed storage drawers</a></li>
+            <li><a href=https://www.selecta-matratzen.com/en/matratzen/l4-latexmatratze> Selecta L4 160cmx200cm Latex mattress. Hardness 1<a></li>
+            <li><a href="https://www.ikea.com/gb/en/p/malm-chest-of-2-drawers-black-brown-00103343/">Malm Side table 2 drawers with glass top</a></li>
+            <li><a href="https://www.ikea.com/gb/en/p/arstid-table-lamp-nickel-plated-white-00280637/">Årstid Table Lamp</a></li>
+            <li>Custom 160cmx106cm linen covered pinboard</li>
+        </ul>
+
+
+		<script>
+            var spheres = [
+            {div: "bedroomEmpty", img: "./sph/bedroomEmptySph.jpg", default_postion: {}},
+            {div: "livingEmpty", img: "./sph/livingEmptySph.jpg", default_postion: {}},
+            ];
+
+            for(sphere of spheres){
+                var div = document.getElementById(sphere.div);
+			    var PSV = new PhotoSphereViewer({
+					panorama: sphere.img,
+                    loading_img: sphere.img,
+					container: div,
+					default_position: sphere.default_position,
+					navbar: true,
+                    zoom_level: 50,
+					navbar_style: {
+						backgroundColor: 'rgba(58, 67, 77, 0.7)'
+					},
+				});
+            }
+
+
+
+		</script>
+	</body>
+
+</html>
