@@ -20,7 +20,7 @@ h1 {
 }
 
 /* Subheaddings */
-header p, header a, header h2, video+p {
+header p, header a, header h2, video+p, a+p, .panorama+p {
     text-align: center;
     margin: 0;
 }
